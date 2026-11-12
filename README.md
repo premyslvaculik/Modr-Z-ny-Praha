@@ -27,13 +27,9 @@ Hotový, zkompilovaný a podepsaný instalační balíček **Modré Zóny Praha*
 
 ## Ukázkové snímky obrazovky (Screenshots)
 
-| Povolené parkování (Moje zóna 8.3 – modrá) | Upozornění na jinou podzónu (8.1 Karlín – oranžová) | Správa mých parkovacích zón a oprávnění |
-| :---: | :---: | :---: |
-| ![Povolené parkování v zóně 8.3](docs/screenshots/screen_map_allowed.png) | ![Upozornění na jinou podzónu 8.1](docs/screenshots/screen_map_subzone.png) | ![Správa parkovacích oprávnění](docs/screenshots/screen_subscriptions.png) |
-
-### Ukázka experimentálního rozhraní v Android Auto (Palubní displej vozu)
-
-![Android Auto – Vlastní vykreslování mapy a zón ZPS](docs/screenshots/screen_android_auto.png)
+| Povolené parkování (Zóna 8.3 – modrá) | Jiná podzóna (8.1 Karlín – oranžová) | Moje předplacené zóny | Nastavení & Android Auto (Experiment) |
+| :---: | :---: | :---: | :---: |
+| ![Povolené parkování v zóně 8.3](docs/screenshots/screen_map_allowed.png) | ![Upozornění na jinou podzónu 8.1](docs/screenshots/screen_map_subzone.png) | ![Správa parkovacích oprávnění](docs/screenshots/screen_subscriptions.png) | ![Nastavení a Android Auto Experiment](docs/screenshots/screen_android_auto.png) |
 
 ---
 
@@ -78,31 +74,10 @@ Hotový, zkompilovaný a podepsaný instalační balíček **Modré Zóny Praha*
 
 ---
 
-## Jak nahrát projekt z AI Studia na GitHub a nastavit Social Preview
-
-1. **Nahrání na GitHub přímo z Google AI Studia:**
-   * V horní liště nebo v menu nastavení Google AI Studia klikněte na ikonu **GitHub / Export to GitHub** (případně **Download ZIP**).
-   * Přihlaste se ke svému GitHub účtu a zvolte název nového repozitáře (např. `modre-zony-praha`).
-2. **Nastavení náhledového obrázku repozitáře (GitHub Social Preview – 1280×640 px):**
-   * Ve složce `docs/screenshots/` je připravený obrázek přesně v doporučeném rozlišení **1280×640 px** (pod 1 MB):
-     * **[`docs/screenshots/social_preview_1280x640.png`](docs/screenshots/social_preview_1280x640.png?raw=1)** (438 KB, PNG)
-     * **[`docs/screenshots/social_preview_1280x640.jpg`](docs/screenshots/social_preview_1280x640.jpg?raw=1)** (212 KB, JPG)
-   * Na GitHubu otevřete v repozitáři záložku **Settings → General → Social preview**, klikněte na **Edit → Upload an image...** a nahrajte soubor `social_preview_1280x640.png` (nebo `.jpg`).
-3. **Automatické sestavení APK na GitHubu (GitHub Actions):**
-   * Součástí projektu je připravený workflow soubor `.github/workflows/android-build.yml`.
-   * Jakmile kód nahrajete na GitHub, v sekci **Releases** (nebo na záložce **Actions → Artifacts**) najdete automaticky sestavený instalační balíček **`ModreZonyPraha.apk`**.
-4. **Lokální sestavení v Android Studiu / příkazové řádce:**
-   ```bash
-   ./gradlew assembleDebug
-   ```
-   Výsledný APK soubor najdete v `app/build/outputs/apk/debug/app-debug.apk`.
-
----
-
 ## Struktura projektu
 
 * `apk/ModreZonyPraha.apk` – Zkompilovaný instalační balíček aplikace připravený k přímému stažení.
-* `docs/screenshots/` – Náhledový 16:9 obrázek (`hero_preview.jpg`), **GitHub Social Preview 1280×640 px** (`social_preview_1280x640.png` / `.jpg`) a ukázkové snímky obrazovky aplikace i experimentálního režimu Android Auto.
+* `docs/screenshots/` – Ukázkové snímky obrazovky reálné aplikace.
 * `app/src/main/java/com/example/`
   * `MainActivity.kt` – Vstupní aktivita aplikace, spodní navigace a správa oprávnění GPS/notifikací.
   * `ui/MainViewModel.kt` – Reaktivní stav aplikace (`StateFlow`), vyhodnocování polohy a správa předplatných.
