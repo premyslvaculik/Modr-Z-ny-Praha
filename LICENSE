@@ -1,0 +1,66 @@
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007 (with Section 7(b) Additional Attribution Terms)
+
+Copyright (C) 2026 Dotekomanie.cz (https://dotekomanie.cz)
+
+===========================================================================
+DODATEČNÉ PODMÍNKY DLE SEKCE 7(b) GNU GPLv3 – POVINNÁ ATRIBUCE (ČESKY)
+===========================================================================
+V souladu s ustanovením Sekce 7 písm. b) licence GNU General Public License v3.0
+(„Zachování specifikovaných přiměřených právních upozornění a uvedení autorství“)
+se na jakékoliv kopírování, úpravy, odvozená díla nebo distribuci tohoto softwaru
+(ve zdrojové i binární podobě, např. APK/AAB) vztahují následující závazné podmínky:
+
+1. Uvedení v aplikaci (UI):
+   Každá upravená či neupravená verze této aplikace musí v uživatelském rozhraní
+   (v sekci „Nastavení“ nebo „O aplikaci“) viditelně zobrazovat informaci, že
+   původním autorem a zdrojem projektu je portál Dotekomanie.cz, včetně aktivního
+   odkazu na https://dotekomanie.cz.
+
+2. Uvedení v obchodech s aplikacemi (Google Play apod.) a repozitářích:
+   Pokud kdokoliv publikuje tuto aplikaci nebo její upravenou verzi v obchodě
+   s aplikacemi (zejména Google Play Store, F-Droid, Huawei AppGallery apod.)
+   nebo ve veřejném repozitáři, je povinen přímo v popisu aplikace v daném obchodě
+   (Store Listing Description) i v souboru README viditelně uvést:
+   „Založeno na open-source projektu portálu Dotekomanie.cz (https://dotekomanie.cz)“.
+
+Odstranění nebo skrytí těchto upozornění a uvedení původu z uživatelského rozhraní
+aplikace nebo z popisu v obchodě s aplikacemi je porušením této licence.
+
+===========================================================================
+SECTION 7(b) ADDITIONAL TERMS – MANDATORY ATTRIBUTION (ENGLISH)
+===========================================================================
+Pursuant to Section 7(b) of the GNU General Public License version 3.0
+("Preservation of specified reasonable legal notices and author attributions"),
+any redistribution, modification, derivative work, or publication of this software
+(in source or binary/APK/AAB form) is subject to the following mandatory terms:
+
+1. In-App Attribution (UI Requirement):
+   Every modified or unmodified version of the application must prominently retain
+   the attribution to "Dotekomanie.cz" (including a clickable link to
+   https://dotekomanie.cz) inside the application's "Settings" or "About" screen.
+
+2. App Store Listing & Repository Attribution:
+   If you publish this application or any derivative work on any application store
+   (including but not limited to Google Play Store, F-Droid, etc.) or public code
+   repository, you must visibly include the following attribution in the public
+   store listing description and README documentation:
+   "Based on the open-source project by Dotekomanie.cz (https://dotekomanie.cz)".
+
+Removing or obscuring this attribution from the application UI or app store
+description terminates your rights under this License.
+
+===========================================================================
+GNU GENERAL PUBLIC LICENSE – TERMS AND CONDITIONS (SUMMARY & FULL TEXT REF)
+===========================================================================
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version, subject to the Section 7(b) Additional Attribution Terms stated above.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.html>.

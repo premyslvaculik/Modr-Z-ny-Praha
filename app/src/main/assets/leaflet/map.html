@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #E2E8F0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: #E2E8F0;
+            z-index: 1;
+        }
+        /* Custom Blinking Pulsating GPS Radar Beacon */
+        .blinking-radar-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+        }
+        .radar-halo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(26, 86, 219, 0.45);
+            animation: radar-pulse 1.8s infinite ease-out;
+        }
+        .radar-core {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1A56DB;
+            border: 3.5px solid #FFFFFF;
+            box-shadow: 0 0 14px rgba(26, 86, 219, 0.8), 0 2px 6px rgba(0, 0, 0, 0.45);
+        }
+        @keyframes radar-pulse {
+            0% {
+                transform: scale(0.25);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(1.35);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1.7);
+                opacity: 0;
+            }
+        }
+        /* Zone labels */
+        .zone-label-tooltip {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 2px solid #1D4ED8 !important;
+            border-radius: 8px !important;
+            font-size: 11px !important;
+            font-weight: 800 !important;
+            color: #1E3A8A !important;
+            padding: 4px 9px !important;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25) !important;
+            white-space: nowrap !important;
+        }
+        .zone-label-other {
+            border-color: #D97706 !important;
+            color: #7C2D12 !important;
+        }
+        .user-loc-tooltip {
+            background: #0F172A !important;
+            color: #FFFFFF !important;
+            border: 1px solid #334155 !important;
+            border-radius: 6px !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            padding: 3px 8px !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+            margin-top: -8px !important;
+        }
+        .leaflet-control-attribution, .leaflet-control-zoom {
+            display: none !important;
+        }
+        #loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="loading-overlay">Načítám mapu Prahy...</div>
+    <script>
+        // Global state
+        var map = null;
+        var userMarker = null;
+        var polygonLayerGroup = null;
+        var currentLat = (window.INITIAL_CONFIG && window.INITIAL_CONFIG.lat) ? window.INITIAL_CONFIG.lat : 50.1319683;
+        var currentLng = (window.INITIAL_CONFIG && window.INITIAL_CONFIG.lng) ? window.INITIAL_CONFIG.lng : 14.4874056;
+        var activeTileLayer = null;
+        var currentLayerType = (window.INITIAL_CONFIG && window.INITIAL_CONFIG.layer) ? window.INITIAL_CONFIG.layer : 'google_roadmap';
+        var cachedZones = (window.INITIAL_CONFIG && window.INITIAL_CONFIG.zones) ? window.INITIAL_CONFIG.zones : null;
+
+        var tileDefinitions = {
+            google_roadmap: {
+                name: 'Google Mapy (Ulice)',
+                url: 'https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+                subdomains: ['0', '1', '2', '3'],
+                maxZoom: 20,
+                maxNativeZoom: 19
+            },
+            osm: {
+                name: 'OpenStreetMap (Standard)',
+                url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c'],
+                maxZoom: 19,
+                maxNativeZoom: 19
+            },
+            google_satellite: {
+                name: 'Google Satelit',
+                url: 'https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                subdomains: ['0', '1', '2', '3'],
+                maxZoom: 20,
+                maxNativeZoom: 19
+            }
+        };
+
+        function setTileLayer(type) {
+            currentLayerType = type;
+            if (!map) return;
+            var def = tileDefinitions[type] || tileDefinitions.google_roadmap;
+            if (activeTileLayer) {
+                try { map.removeLayer(activeTileLayer); } catch(e){}
+            }
+            try {
+                // Do NOT set crossOrigin: true, allowing tiles to load without CORS issues
+                activeTileLayer = L.tileLayer(def.url, {
+                    maxZoom: def.maxZoom,
+                    maxNativeZoom: def.maxNativeZoom || 19,
+                    subdomains: def.subdomains
+                }).addTo(map);
+
+                // Keep vector zone overlay strictly on top of raster tiles
+                if (polygonLayerGroup) {
+                    polygonLayerGroup.bringToFront();
+                }
+            } catch (err) {
+                console.error("Error setting tile layer:", err);
+            }
+        }
+
+        function checkAndInvalidate() {
+            if (!map) {
+                initMap();
+                return;
+            }
+            try {
+                map.invalidateSize(true);
+            } catch (e) {
+                console.error("invalidateSize error:", e);
+            }
+        }
+
+        function initMap() {
+            if (map) {
+                checkAndInvalidate();
+                return;
+            }
+
+            if (typeof L === 'undefined' && typeof leaflet !== 'undefined') {
+                window.L = leaflet;
+            }
+            if (typeof L === 'undefined') {
+                console.warn("Leaflet library not ready yet, retrying...");
+                setTimeout(initMap, 50);
+                return;
+            }
+
+            var mapContainer = document.getElementById('map');
+            if (!mapContainer) return;
+
+            try {
+                map = L.map('map', {
+                    center: [currentLat, currentLng],
+                    zoom: 15,
+                    zoomControl: false,
+                    fadeAnimation: false,
+                    zoomAnimation: true
+                });
+
+                // Dedicated pane for vector zones so they ALWAYS stay above raster tile layers
+                if (map.createPane) {
+                    var vectorPane = map.createPane('vectorZonesPane');
+                    vectorPane.style.zIndex = '450';
+                    vectorPane.style.pointerEvents = 'auto';
+
+                    var userMarkerPane = map.createPane('userMarkerPane');
+                    userMarkerPane.style.zIndex = '500';
+                }
+
+                // Apply initial tile layer
+                setTileLayer(currentLayerType);
+
+                // Create vector layer group on top of the tile layer
+                polygonLayerGroup = L.layerGroup().addTo(map);
+
+                // Add blinking radar user marker
+                updateUserMarker(currentLat, currentLng, "Roudnická 453/22, Praha 8");
+
+                // If initial zones are provided, render them immediately
+                if (cachedZones) {
+                    renderZones(cachedZones);
+                }
+
+                // Hide loading overlay
+                var overlay = document.getElementById('loading-overlay');
+                if (overlay) {
+                    overlay.style.opacity = '0';
+                    setTimeout(function() { overlay.style.display = 'none'; }, 200);
+                }
+
+                // Recalculate container bounds
+                checkAndInvalidate();
+                setTimeout(checkAndInvalidate, 100);
+                setTimeout(checkAndInvalidate, 400);
+
+                if (window.Android && window.Android.onMapReady) {
+                    window.Android.onMapReady();
+                }
+            } catch (err) {
+                console.error("Map initialization exception:", err);
+            }
+        }
+
+        function updateUserMarker(lat, lng, label) {
+            currentLat = lat;
+            currentLng = lng;
+            if (!map) return;
+
+            var radarIcon = L.divIcon({
+                className: 'custom-radar-icon',
+                html: '<div class="blinking-radar-container"><div class="radar-halo"></div><div class="radar-core"></div></div>',
+                iconSize: [50, 50],
+                iconAnchor: [25, 25]
+            });
+
+            var paneOpt = map.getPane('userMarkerPane') ? { pane: 'userMarkerPane' } : {};
+
+            if (userMarker) {
+                userMarker.setLatLng([lat, lng]);
+            } else {
+                userMarker = L.marker([lat, lng], Object.assign({ icon: radarIcon }, paneOpt)).addTo(map);
+            }
+
+            var text = label || "Aktuální poloha";
+            userMarker.unbindTooltip();
+            userMarker.bindTooltip(text, {
+                permanent: true,
+                direction: 'top',
+                className: 'user-loc-tooltip'
+            });
+        }
+
+        function centerOnUser() {
+            if (map) {
+                checkAndInvalidate();
+                map.setView([currentLat, currentLng], 16, { animate: true });
+            }
+        }
+
+        function zoomIn() {
+            if (map) { map.zoomIn(); }
+        }
+
+        function zoomOut() {
+            if (map) { map.zoomOut(); }
+        }
+
+        function renderZones(zones) {
+            cachedZones = zones;
+            if (!map) {
+                initMap();
+            }
+            if (!polygonLayerGroup) return;
+            polygonLayerGroup.clearLayers();
+            if (!zones) return;
+
+            var list = zones;
+            if (typeof list === 'string') {
+                try {
+                    list = JSON.parse(list);
+                    if (typeof list === 'string') {
+                        list = JSON.parse(list);
+                    }
+                } catch (e) {
+                    console.error("JSON parse error:", e);
+                    return;
+                }
+            }
+            if (!Array.isArray(list)) return;
+
+            var paneOpt = (map && map.getPane('vectorZonesPane')) ? { pane: 'vectorZonesPane' } : {};
+
+            list.forEach(function(zone) {
+                var poly = zone.polygon;
+                if (typeof poly === 'string') {
+                    try { poly = JSON.parse(poly); } catch(e) { return; }
+                }
+                if (poly && poly.length >= 3) {
+                    var isSub = zone.isSubscribed;
+                    // Vector layer styling: distinct boundary stroke with light transparent fill
+                    // Subscribed zone: Royal blue (#1D4ED8) with 18% transparent blue fill
+                    // Other zones: Amber/Orange (#D97706) with 12% transparent fill
+                    var strokeColor = isSub ? '#1D4ED8' : '#D97706';
+                    var fillColor = isSub ? '#2563EB' : '#F59E0B';
+                    var fillOpacity = isSub ? 0.18 : 0.12;
+                    var weight = isSub ? 3.8 : 2.5;
+
+                    var polygonOptions = Object.assign({
+                        color: strokeColor,
+                        fillColor: fillColor,
+                        fillOpacity: fillOpacity,
+                        weight: weight,
+                        lineJoin: 'round',
+                        lineCap: 'round',
+                        dashArray: isSub ? null : '6, 6'
+                    }, paneOpt);
+
+                    var polygon = L.polygon(poly, polygonOptions);
+
+                    var labelText = isSub ? 
+                        (zone.sectorCode + ' ' + zone.sectorName + ' ✓ Vaše platná zóna') : 
+                        (zone.sectorCode + ' ' + zone.sectorName);
+
+                    polygon.bindTooltip(labelText, {
+                        permanent: true,
+                        direction: 'center',
+                        className: 'zone-label-tooltip ' + (isSub ? '' : 'zone-label-other')
+                    });
+
+                    polygon.on('click', function() {
+                        if (window.Android && window.Android.onZoneClick) {
+                            window.Android.onZoneClick(zone.id);
+                        }
+                    });
+
+                    polygon.addTo(polygonLayerGroup);
+                }
+            });
+
+            // Ensure vector overlay stays prominently above tiles
+            if (polygonLayerGroup) {
+                polygonLayerGroup.bringToFront();
+            }
+
+            checkAndInvalidate();
+        }
+
+        // Layout change detection
+        window.addEventListener('resize', checkAndInvalidate);
+        window.addEventListener('orientationchange', checkAndInvalidate);
+
+        if (window.ResizeObserver) {
+            var ro = new ResizeObserver(function() {
+                checkAndInvalidate();
+            });
+            window.addEventListener('DOMContentLoaded', function() {
+                var mapEl = document.getElementById('map');
+                if (mapEl) ro.observe(mapEl);
+            });
+        }
+
+        // Initialize when ready
+        document.addEventListener('DOMContentLoaded', initMap);
+        window.addEventListener('load', initMap);
+        setTimeout(initMap, 50);
+        setTimeout(initMap, 200);
+
+        // Safety fallback to hide loading overlay
+        setTimeout(function() {
+            var ov = document.getElementById('loading-overlay');
+            if (ov) {
+                ov.style.opacity = '0';
+                setTimeout(function() { ov.style.display = 'none'; }, 200);
+            }
+        }, 1200);
+    </script>
+</body>
+</html>

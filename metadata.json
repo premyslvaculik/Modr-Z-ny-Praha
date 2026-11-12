@@ -1,0 +1,6 @@
+{
+  "name": "Modré Zóny Praha",
+  "description": "Jednoduchá aplikace pro ověření parkování v pražských modrých zónách a podzónách ZPS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
