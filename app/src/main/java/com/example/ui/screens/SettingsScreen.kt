@@ -214,7 +214,7 @@ fun SettingsScreen(
 
         // Android Auto Integration & Troubleshooting Section
         Text(
-            text = "Android Auto (Palubní displej vozu)",
+            text = "Android Auto – Experiment (Palubní displej vozu)",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
@@ -252,15 +252,15 @@ fun SettingsScreen(
                     }
                     Column {
                         Text(
-                            text = "Vlastní mapa zón pro Android Auto",
+                            text = "Vlastní mapa zón pro Android Auto (Experiment)",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
                             text = if (diagnostics.isCarServiceRegistered) {
-                                "✓ Služba ModreZonyCarAppService (NAVIGATION) je zaregistrována"
+                                "Experimentální modul CarAppService (NAVIGATION) je aktivní"
                             } else {
-                                "Služba CarAppService čeká na registraci"
+                                "Experimentální služba CarAppService čeká na registraci"
                             },
                             style = MaterialTheme.typography.bodySmall,
                             color = Color(0xFF16A34A),
