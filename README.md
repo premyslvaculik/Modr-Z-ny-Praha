@@ -2,7 +2,7 @@
 
 Open-source aplikace pro Android napsaná v **Kotlinu** a **Jetpack Compose**, která řidičům v reálném čase (na telefonu i přímo na palubním displeji vozu v **Android Auto**) ukazuje, zda mohou na aktuálním místě v Praze legálně zaparkovat v rámci svého rezidentního parkovacího oprávnění.
 
-> **Původ projektu:** Tento projekt vznikl pro **[Dotekomanie.cz](https://dotekomanie.cz)**. Při jakémkoliv dalším použití, úpravách nebo publikaci (včetně Obchodu Google Play) je dle licenčních podmínek (**GNU GPL v3.0 – Sekce 7b**) povinné uvést **Dotekomanie.cz** přímo v nastavení aplikace i v popisu v obchodě s aplikacemi.
+> **Jak projekt vznikl:** Celý tento projekt byl vytvořen v prostředí **Google AI Studio** za využití modelů **Gemini 3.8** a **Gemini 4 Argon** jako ukázkový open-source projekt pro portál **[Dotekomanie.cz](https://dotekomanie.cz)**. Při jakémkoliv dalším použití, úpravách nebo publikaci (včetně Obchodu Google Play) je dle licenčních podmínek (**GNU GPL v3.0 – Sekce 7b**) povinné uvést **Dotekomanie.cz** přímo v nastavení aplikace i v popisu v obchodě s aplikacemi.
 
 ---
 

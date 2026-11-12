@@ -636,7 +636,7 @@ fun SettingsScreen(
                 }
 
                 Text(
-                    text = "Tato aplikace vznikla jako open-source projekt pro portál Dotekomanie.cz. Zdrojový kód je šířen pod licencí GNU General Public License v3.0 s dodatečnou podmínkou povinné atribuce dle Sekce 7(b): každá upravená verze či distribuce musí zachovat uvedení Dotekomanie.cz v nastavení aplikace i v popisu v obchodě s aplikacemi (např. Google Play).",
+                    text = "Tato aplikace vznikla jako open-source projekt pro portál Dotekomanie.cz. Celý projekt byl vytvořen v prostředí Google AI Studio za využití modelů Gemini 3.8 a Gemini 4 Argon. Zdrojový kód je šířen pod licencí GNU General Public License v3.0 s dodatečnou podmínkou povinné atribuce dle Sekce 7(b): každá upravená verze či distribuce musí zachovat uvedení Dotekomanie.cz v nastavení aplikace i v popisu v obchodě s aplikacemi (např. Google Play).",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
