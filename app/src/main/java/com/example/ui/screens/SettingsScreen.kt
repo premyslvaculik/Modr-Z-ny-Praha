@@ -641,6 +641,13 @@ fun SettingsScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
+                Text(
+                    text = "Ke stažení: Zkompilovaný instalační soubor APK (apk/ModreZonyPraha.apk) i kompletní zdrojový kód jsou volně ke stažení v oficiálním GitHub repozitáři projektu.",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
                 OutlinedButton(
                     onClick = {
                         try {

@@ -1,4 +1,4 @@
-# 🚗 Modré Zóny Praha (s podporou Android Auto)
+# Modré Zóny Praha (s podporou Android Auto)
 
 Open-source aplikace pro Android napsaná v **Kotlinu** a **Jetpack Compose**, která řidičům v reálném čase (na telefonu i přímo na palubním displeji vozu v **Android Auto**) ukazuje, zda mohou na aktuálním místě v Praze legálně zaparkovat v rámci svého rezidentního parkovacího oprávnění.
 
@@ -6,7 +6,24 @@ Open-source aplikace pro Android napsaná v **Kotlinu** a **Jetpack Compose**, k
 
 ---
 
-## ✨ Hlavní funkce aplikace
+## Ke stažení (Download APK)
+
+Hotový, zkompilovaný a podepsaný instalační balíček **Modré Zóny Praha** (včetně plné podpory pro **Android Auto**) si můžete stáhnout přímo zde bez nutnosti cokoliv kompilovat:
+
+| Soubor ke stažení | Verze | Velikost | Požadavky | Přímý odkaz |
+| :--- | :---: | :---: | :---: | :---: |
+| **`ModreZonyPraha.apk`** | `1.0` | `24,3 MB` | Android 7.0+ (API 24) & Android Auto | **[Stáhnout APK ihned](apk/ModreZonyPraha.apk?raw=1)** |
+
+* **Přímé stažení jedním kliknutím:** Klikněte na **[Stáhnout ModreZonyPraha.apk](apk/ModreZonyPraha.apk?raw=1)** (parametr `?raw=1` na GitHubu rovnou zahájí stahování souboru `.apk`).
+* **Umístění v repozitáři:** Soubor najdete také přímo ve složce **[`apk/ModreZonyPraha.apk`](apk/ModreZonyPraha.apk)** nebo v pravém sloupci GitHubu v sekci **[Releases](../../releases)**.
+* **Jak APK nainstalovat do telefonu:**
+  1. Stáhněte si soubor `ModreZonyPraha.apk` do telefonu s Androidem.
+  2. Otevřete stažený soubor (pokud se telefon zeptá, povolte *Instalaci z neznámých zdrojů* pro váš prohlížeč nebo správce souborů).
+  3. Pokud chcete aplikaci používat i v **Android Auto**, postupujte podle návodu níže v sekci *[Jak zprovoznit aplikaci v Android Auto](#jak-zprovoznit-aplikaci-v-android-auto)*.
+
+---
+
+## Hlavní funkce aplikace
 
 * **100% bez nutnosti API klíčů (Keyless Map Engine):**
   * Aplikace kombinuje detailní českou uliční mapu HD a mapový podklad **OpenStreetMap** s automatickou diskovou a paměťovou mezipamětí (`MapTileLoader`).
@@ -15,8 +32,8 @@ Open-source aplikace pro Android napsaná v **Kotlinu** a **Jetpack Compose**, k
   * Obsahuje vícevrcholové polygony pražských zón placeného stání (ZPS) odvozené z oficiálních otevřených dat (`opendata.praha.eu` / OSM hranice městských částí a katastrů).
   * **Podpora sektorů a podzón (např. Praha 8):** Přesně rozlišuje podzóny **8.1 Karlín**, **8.2 Libeň** a **8.3 Kobylisy, Střížkov a Bohnice** (včetně 0% přesahu mezi Prahou 8.3 a Prahou 9). Pokud máte zaplacený pouze sektor `8.3`, aplikace vás při vjezdu do `8.1` nebo `8.2` okamžitě upozorní stavem **„JINÁ PODZÓNA“**.
 * **Přehledné barevné odlišení na mapě:**
-  * 🔵 **Modrá zóna (`#1D4ED8`, plná čára):** Zóna nebo podzóna pokrytá vaším aktivním předplatným – zde **můžete parkovat**.
-  * 🟠 **Oranžová zóna (`#D97706`, přerušovaná čára):** Ostatní zpoplatněné modré zóny ZPS, kde vaše předplatné neplatí.
+  * **Modrá zóna (`#1D4ED8`, plná čára):** Zóna nebo podzóna pokrytá vaším aktivním předplatným – zde **můžete parkovat**.
+  * **Oranžová zóna (`#D97706`, přerušovaná čára):** Ostatní zpoplatněné modré zóny ZPS, kde vaše předplatné neplatí.
 * **Plnohodnotná podpora pro Android Auto (`androidx.car.app`):**
   * Vlastní vykreslování uliční mapy, polygonů zón, polohy vozu a stavového HUD panelu přímo na displej auta pomocí `CarAppService`, `SurfaceCallback` a `NavigationTemplate`.
   * Detailní obrazovka zóny (`PaneTemplate`) zobrazující provozní dobu, návštěvnický tarif a stav vašeho oprávnění.
@@ -25,7 +42,7 @@ Open-source aplikace pro Android napsaná v **Kotlinu** a **Jetpack Compose**, k
 
 ---
 
-## 🚘 Jak zprovoznit aplikaci v Android Auto
+## Jak zprovoznit aplikaci v Android Auto
 
 Pokud aplikaci instalujete ze souboru `.apk` (mimo Obchod Google Play), Android Auto vyžaduje povolení vývojářského režimu:
 
@@ -47,15 +64,14 @@ Pokud aplikaci instalujete ze souboru `.apk` (mimo Obchod Google Play), Android 
 
 ---
 
-## 🛠️ Jak nahrát projekt z AI Studia na GitHub a získat APK
+## Jak nahrát projekt z AI Studia na GitHub a sestavit APK
 
 1. **Nahrání na GitHub přímo z Google AI Studia:**
    * V horní liště nebo v menu nastavení Google AI Studia klikněte na ikonu **GitHub / Export to GitHub** (případně **Download ZIP**).
    * Přihlaste se ke svému GitHub účtu a zvolte název nového repozitáře (např. `modre-zony-praha`).
 2. **Automatické sestavení APK na GitHubu (GitHub Actions):**
    * Součástí projektu je připravený workflow soubor `.github/workflows/android-build.yml`.
-   * Jakmile kód nahrajete na GitHub, přejděte ve svém repozitáři na záložku **Actions**.
-   * U nejnovějšího běhu workflow **Android APK Build** si v sekci **Artifacts** můžete jedním kliknutím stáhnout hotový instalační balíček **`ModreZonyPraha-debug.apk`**.
+   * Jakmile kód nahrajete na GitHub, v sekci **Releases** (nebo na záložce **Actions → Artifacts**) najdete automaticky sestavený instalační balíček **`ModreZonyPraha.apk`**.
 3. **Lokální sestavení v Android Studiu / příkazové řádce:**
    ```bash
    ./gradlew assembleDebug
@@ -64,20 +80,21 @@ Pokud aplikaci instalujete ze souboru `.apk` (mimo Obchod Google Play), Android 
 
 ---
 
-## 🗂️ Struktura projektu
+## Struktura projektu
 
+* `apk/ModreZonyPraha.apk` – Zkompilovaný instalační balíček aplikace připravený k přímému stažení.
 * `app/src/main/java/com/example/`
   * `MainActivity.kt` – Vstupní aktivita aplikace, spodní navigace a správa oprávnění GPS/notifikací.
   * `ui/MainViewModel.kt` – Reaktivní stav aplikace (`StateFlow`), vyhodnocování polohy a správa předplatných.
   * `ui/components/PinchZoomMap.kt` – Interaktivní mapa v Jetpack Compose s vykreslováním dlaždic a polygonů ZPS.
-  * `ui/screens/` – Obrazovky *Mapa & Status* (`MapStatusScreen.kt`), *Moje Zóny* (`MyZonesScreen.kt`) a *Nastavení & Android Auto* (`SettingsScreen.kt`).
+  * `ui/screens/` – Obrazovky *Mapa & Status* (`HomeScreen.kt`), *Moje Zóny* (`SubscriptionsScreen.kt`) a *Nastavení & Android Auto* (`SettingsScreen.kt`).
   * `auto/` – Modul pro **Android Auto** (`ModreZonyCarAppService.kt`, `ModreZonyCarScreens.kt`, `CarMapSurfaceRenderer.kt`).
   * `data/` – Lokální databáze Room (`AppDatabase.kt`), modely (`ParkingModels.kt`), repozitář (`ParkingRepository.kt`) a přesné hranice pražských zón (`PragueZonesSeed.kt`).
   * `util/` – Sdílený loader mapových dlaždic (`MapTileLoader.kt`), geometrické výpočty ray-casting algoritmem (`GeoMath.kt`), GPS poloha (`LocationHelper.kt`) a notifikace (`NotificationHelper.kt`).
 
 ---
 
-## 📜 Licence a povinné uvedení zdroje (GNU GPL v3.0 + Sekce 7b)
+## Licence a povinné uvedení zdroje (GNU GPL v3.0 + Sekce 7b)
 
 Tento projekt je licencován pod **GNU General Public License v3.0 (GPL-3.0)** s doplňujícími podmínkami dle **Sekce 7(b)** (viz soubor [LICENSE](LICENSE)):
 

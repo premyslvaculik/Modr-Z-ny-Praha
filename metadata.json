@@ -1,6 +1,6 @@
 {
   "name": "Modré Zóny Praha",
-  "description": "Jednoduchá aplikace pro ověření parkování v pražských modrých zónách a podzónách ZPS.",
+  "description": "Open-source aplikace pro ověření parkování v pražských modrých zónách a podzónách ZPS včetně podpory Android Auto (projekt Dotekomanie.cz, APK ke stažení ve složce apk/).",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
